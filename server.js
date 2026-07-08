@@ -7,6 +7,8 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const projectRoutes = require('./routes/projectRoutes');
+const videoRoutes = require('./routes/videoRoutes');
 
 const app = express();
 
@@ -31,6 +33,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/projects', projectRoutes);
+app.use('/api/videos', videoRoutes);
 
 const PORT = process.env.PORT || 5000;
 
