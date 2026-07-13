@@ -14,4 +14,7 @@ router.get('/me', authMiddleware, async (req, res) => {
   });
 });
 
+router.put('/profile', authMiddleware, authController.updateProfile);
+router.put('/password', authMiddleware, authController.changePassword);
+
 module.exports = router;
