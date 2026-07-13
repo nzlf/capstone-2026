@@ -113,3 +113,68 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { nama, username, nomorWa } = req.body;
+    const userId = req.user.id;
+
+    if (!nama || !username || !nomorWa) {
+      return res.status(400).json({ message: 'Semua kolom profil wajib diisi' });
+    }
+
+    const updatedUser = await User.updateProfile(userId, {
+      name: nama,
+      username,
+      whatsappNumber: nomorWa,
+    });
+
+    return res.json({
+      message: 'Profil berhasil diperbarui',
+      user: {
+        id: updatedUser.id,
+        nama: updatedUser.name,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        nomorWa: updatedUser.whatsapp_number,
+        role: updatedUser.role,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Gagal memperbarui profil',
+      error: error.message,
+    });
+  }
+};
+
+exports.changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const userId = req.user.id;
+
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ message: 'Password lama dan baru wajib diisi' });
+    }
+
+    const userRecord = await User.findPasswordHashById(userId);
+    if (!userRecord) {
+      return res.status(404).json({ message: 'User tidak ditemukan' });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, userRecord.password_hash);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Password lama salah' });
+    }
+
+    const newHash = await bcrypt.hash(newPassword, 10);
+    await User.updatePassword(userId, newHash);
+
+    return res.json({ message: 'Password berhasil diubah' });
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Gagal mengubah password',
+      error: error.message,
+    });
+  }
+};
