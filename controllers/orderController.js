@@ -56,7 +56,7 @@ const checkout = async (req, res) => {
       id_user,
       total_harga,
       alamat_pengiriman: alamat_pengiriman || null,
-      status: 'pending'
+      status: 'verifikasi pembayaran'
     });
 
     const finalDetailItems = detailItemsToInsert.map(detail => ({
@@ -121,11 +121,11 @@ const getAllOrders = async (req, res) => {
 const updateOrder = async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, no_resi } = req.body;
+    const { status, resi } = req.body;
     
     const updateData = {};
     if (status) updateData.status = status;
-    if (no_resi !== undefined) updateData.no_resi = no_resi;
+    if (resi !== undefined) updateData.resi = resi;
 
     const updatedOrder = await Order.update(id, updateData);
     
