@@ -26,7 +26,7 @@ const checkout = async (req, res) => {
         });
       }
 
-      if (product.tipe === 'fisik') {
+      if (product.tipe === 'merchandise') {
         hasPhysical = true;
         if (product.stok < item.jumlah) {
           return res.status(400).json({
