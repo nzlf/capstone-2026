@@ -15,7 +15,7 @@ const createNewProject = async (req, res) => {
       id_user,
       nama_project,
       deskripsi,
-      status: 'Briefing dan Pembayaran'
+      status: 'briefing'
     });
 
     res.status(201).json({
