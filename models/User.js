@@ -70,6 +70,37 @@ const User = {
 
     return data;
   },
+  async updateProfile(id, { name, username, whatsappNumber }) {
+    const { data, error } = await supabase
+      .from('users')
+      .update({ name, username, whatsapp_number: whatsappNumber })
+      .eq('id', id)
+      .select('id, name, username, email, whatsapp_number, role, created_at, updated_at')
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async updatePassword(id, passwordHash) {
+    const { data, error } = await supabase
+      .from('users')
+      .update({ password_hash: passwordHash })
+      .eq('id', id)
+      .select('id')
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async findPasswordHashById(id) {
+    const { data, error } = await supabase
+      .from('users')
+      .select('password_hash')
+      .eq('id', id)
+      .single();
+    if (error) throw error;
+    return data;
+  }
 };
 
 module.exports = User;
